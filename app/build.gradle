@@ -1,0 +1,122 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        debug {
+            storeFile file('..\\keystore\\GoGoGo.jks')
+            storePassword 'GoGoGo'
+            keyAlias 'GoGoKey'
+            keyPassword 'GoGoGo'
+        }
+        release {
+            storeFile file('..\\keystore\\GoGoGo.jks')
+            storePassword 'GoGoGo'
+            keyAlias 'GoGoKey'
+            keyPassword 'GoGoGo'
+        }
+    }
+    ndkVersion '26.1.10909125'
+    compileSdk 32
+    buildToolsVersion = '34.0.0'
+    defaultConfig {
+        applicationId "com.zcshou.gogogo.hao04"
+        minSdkVersion 27
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 32
+        versionCode 1103
+        versionName '3hao' // https://semver.org/lang/zh-CN/
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resConfigs 'zh', 'zh-rCN', 'en', 'en-rUS'
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters "arm64-v8a"
+        }
+        signingConfig signingConfigs.release
+    }
+    buildTypes {
+        release {
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
+            minifyEnabled true
+
+            // Enables resource shrinking, which is performed by the
+            // Android Gradle plugin.
+            shrinkResources true
+
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+            multiDexEnabled true
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    packagingOptions {
+        jniLibs {
+            excludes += ['lib/armeabi/**']
+        }
+        resources {
+            excludes += ['lib/armeabi/**']
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+    namespace 'com.zcshou.gogogo'
+//    lintOptions {
+//        checkReleaseBuilds false
+//        // Or, if you prefer, you can continue to check for errors in release builds,
+//        // but continue the build even when errors are found:
+//        abortOnError false
+//    }
+
+    // 指定输出的可执行程序的名字
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName
+                if (variant.buildType.name == 'release') {
+                    fileName = "tee_${defaultConfig.versionName}.apk"
+                } else {
+                    fileName = "tee_${defaultConfig.versionName}.apk"
+                }
+                outputFileName=fileName
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    // AppCompat 1.5.1 开始显式依赖于 Lifecycle 2.5.1 和 SavedState 1.2.0
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'com.elvishew:xlog:1.11.0'
+    implementation 'io.noties.markwon:core:4.6.2'
+    implementation files('libs/BaiduLBS_Android.jar')
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

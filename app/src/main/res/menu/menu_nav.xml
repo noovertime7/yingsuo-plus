@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group>
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_history"
+            android:title="@string/nav_menu_history" />
+    </group>
+    
+    <group>
+        <item android:title="@string/nav_menu_settings">
+            <menu>
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_menu_settings"
+                    android:title="@string/nav_menu_settings" />
+                <item
+                    android:id="@+id/nav_dev"
+                    android:icon="@drawable/ic_menu_dev"
+                    android:title="@string/nav_menu_dev" />
+                <item
+                    android:id="@+id/nav_menu_contact"
+                    android:icon="@drawable/ic_contact"
+                    android:title="@string/nav_menu_contact" />
+            </menu>
+        </item>
+    </group>
+
+<!--    <item android:title="@string/nav_menu_more">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_update"-->
+<!--                android:icon="@drawable/ic_menu_upgrade"-->
+<!--                android:title="@string/nav_menu_upgrade" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_feedback"-->
+<!--                android:icon="@drawable/ic_menu_feedback"-->
+<!--                android:title="@string/nav_menu_feedback" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_contact"-->
+<!--                android:icon="@drawable/ic_contact"-->
+<!--                android:title="@string/nav_menu_contact" />-->
+<!--        </menu>-->
+<!--    </item>-->
+
+</menu>
