@@ -72,7 +72,7 @@ jobs:
           body: |
             Hello @${{ github.event.issue.user.login }}, Thanks for your using GoGoGo. It is recommended that you first check whether the corresponding document can solve your feedback.
 
-            你好 @${{ github.event.issue.user.login }}，感谢您使用4hao，建议您首先查看对应的文档是否可以解决您的反馈。
+            你好 @${{ github.event.issue.user.login }}，感谢您使用海拔1号，建议您首先查看对应的文档是否可以解决您的反馈。
 
       - name: Comment Invalid
         if: github.event.label.name == 'invalid'

@@ -101,6 +101,19 @@
             app:srcCompat="@drawable/ic_input"
             app:tint="@color/colorAccent" />
 
+        <ImageButton
+            android:id="@+id/input_height"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="280dp"
+            android:layout_marginEnd="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/input_height"
+            android:theme="@style/RippleWhite"
+            app:srcCompat="@drawable/ic_key"
+            app:tint="@color/colorAccent" />
+
 
         <TextView
             android:layout_width="match_parent"

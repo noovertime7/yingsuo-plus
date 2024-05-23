@@ -27,6 +27,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.elvishew.xlog.XLog;
 import com.zcshou.gogogo.MainActivity;
 import com.zcshou.gogogo.R;
 import com.zcshou.joystick.JoyStick;
@@ -182,8 +183,8 @@ public class ServiceGo extends Service {
                     Thread.sleep(100);
 
                     if (!isStop) {
-                        setLocationNetwork();
-                        setLocationGPS();
+                        setLocationNetwork(65);
+                        setLocationGPS(65);
 
                         sendEmptyMessage(HANDLER_MSG_ID);
                     }
@@ -228,12 +229,12 @@ public class ServiceGo extends Service {
         }
     }
 
-    private void setLocationGPS() {
+    private void setLocationGPS(double altitude) {
         try {
             // 尽可能模拟真实的 GPS 数据
             Location loc = new Location(LocationManager.GPS_PROVIDER);
             loc.setAccuracy(Criteria.ACCURACY_FINE);    // 设定此位置的估计水平精度，以米为单位。
-            loc.setAltitude(55.0D);                     // 设置高度，在 WGS 84 参考坐标系中的米
+            loc.setAltitude(altitude);                     // 设置高度，在 WGS 84 参考坐标系中的米
             loc.setBearing(mCurBea);                       // 方向（度）
             loc.setLatitude(mCurLat);                   // 纬度（度）
             loc.setLongitude(mCurLng);                  // 经度（度）
@@ -283,12 +284,12 @@ public class ServiceGo extends Service {
         }
     }
 
-    private void setLocationNetwork() {
+    private void setLocationNetwork(double Altitude) {
         try {
             // 尽可能模拟真实的 NETWORK 数据
             Location loc = new Location(LocationManager.NETWORK_PROVIDER);
             loc.setAccuracy(Criteria.ACCURACY_COARSE);  // 设定此位置的估计水平精度，以米为单位。
-            loc.setAltitude(55.0D);                     // 设置高度，在 WGS 84 参考坐标系中的米
+            loc.setAltitude(Altitude);                     // 设置高度，在 WGS 84 参考坐标系中的米
             loc.setBearing(mCurBea);                       // 方向（度）
             loc.setLatitude(mCurLat);                   // 纬度（度）
             loc.setLongitude(mCurLng);                  // 经度（度）
@@ -326,6 +327,45 @@ public class ServiceGo extends Service {
             mLocHandler.sendEmptyMessage(HANDLER_MSG_ID);
             mJoyStick.setCurrentPosition(mCurLng, mCurLat);
         }
+
+        public void setHeight(double altitude) {
+            try {
+                // 尽可能模拟真实的 GPS 数据
+                Location loc = new Location(LocationManager.GPS_PROVIDER);
+                Location networkLoc = new Location(LocationManager.NETWORK_PROVIDER);
+
+                // 设置GPS数据
+                loc.setAccuracy(Criteria.ACCURACY_FINE);    // 设定此位置的估计水平精度，以米为单位
+                loc.setAltitude(altitude);                 // 设置高度，在 WGS 84 参考坐标系中的米
+                loc.setTime(System.currentTimeMillis());   // 本地时间
+                loc.setSpeed((float) mSpeed);
+                loc.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+                Bundle bundle = new Bundle();
+                bundle.putInt("satellites", 7);
+                loc.setExtras(bundle);
+
+                // 设置Network数据
+                networkLoc.setAccuracy(Criteria.ACCURACY_COARSE);  // 网络位置的精度较低
+                networkLoc.setAltitude(altitude);                 // 设置高度，在 WGS 84 参考坐标系中的米
+                networkLoc.setTime(System.currentTimeMillis());   // 本地时间
+                networkLoc.setSpeed((float) mSpeed);
+                networkLoc.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+                Bundle networkBundle = new Bundle();
+                networkBundle.putInt("satellites", 7);
+                networkLoc.setExtras(networkBundle);
+
+                // 打印日志信息
+                XLog.d("ServiceGo", "setHeight: Setting GPS altitude to " + altitude);
+                XLog.d("ServiceGo", "setHeight: Setting Network altitude to " + altitude);
+
+                // 更新模拟位置
+                mLocManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, loc);
+                mLocManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, networkLoc);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
 

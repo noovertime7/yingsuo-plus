@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">4hao</string>
+    <string name="app_name">海拔1号</string>
     <string name="app_settings">设置</string>
     <string name="app_history">历史记录</string>
     <string name="app_author">ZCShou</string>
     <string name="app_email">zcsexp@gmail.com</string>
     <string name="app_statement">仅供学习使用，否则后果自负！</string>
-    <string name="app_service_tips">4hao服务正在运行中</string>
+    <string name="app_service_tips">海拔1号服务正在运行中</string>
     <string name="app_agreement">用户协议</string>
     <string name="app_agreement_content">"1. 本软件专为学习 Android 开发使用，不会收集任何用户数据。"
     "严禁利用本软件侵犯他人隐私权或者用于游戏牟利，如软件使用者不能遵守此规定， 请立即删除。"
@@ -44,6 +44,7 @@
     <string name="app_search_null">没有匹配结果，请重新搜索</string>
     <string name="app_search_tips">请输入查找内容</string>
     <string name="app_location_ok">位置已传送</string>
+    <string name="app_height_ok">海拔已传送</string>
     <string name="app_location_copy">位置已复制到剪切板</string>
     <string name="app_location_save">位置已保存</string>
 
@@ -101,17 +102,20 @@
     <string name="nav_menu_upgrade">检测更新</string>
     <string name="nav_menu_feedback">问题反馈</string>
     <string name="nav_menu_contact">维护者:Q1849539179</string>
-    <string name="nav_user_name">4hao</string>
+    <string name="nav_user_name">海拔1号</string>
     <string name="nav_user_limit_info">仅供学习使用，否则后果自负!</string>
 
     <!-- 主界面 -->
     <string name="label_longitude">经度</string>
     <string name="label_latitude">纬度</string>
+    <string name="label_height">高度</string>
     <string name="input_position_ok">传送</string>
+    <string name="input_height_set">设置高度</string>
     <string name="input_position_cancel">取消</string>
     <string name="input_position_baidu">BD09 坐标系</string>
     <string name="input_position_gps">GPS 坐标系</string>
     <string name="input_button">输入位置</string>
+    <string name="input_height">输入高度</string>
     <string name="cur_position">返回当前位置</string>
     <string name="zoom_in">放大</string>
     <string name="zoom_out">缩小</string>
@@ -125,7 +129,7 @@
     <!-- 更新 -->
     <string name="update_title">新版本可用</string>
     <string name="update_downloading">升级文件下载中。。。</string>
-    <string name="update_last">恭喜，4hao已是最新版</string>
+    <string name="update_last">恭喜，海拔1号已是最新版</string>
     <string name="update_download">立即下载</string>
     <string name="update_ignore">忽略一次</string>
     <string name="update_time">更新时间：</string>

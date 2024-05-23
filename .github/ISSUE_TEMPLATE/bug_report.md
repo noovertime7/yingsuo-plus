@@ -21,10 +21,10 @@ assignees: ''
 
 ### 版本信息 / Version Info
 
-- 4hao版本 / GoGoGo Version : 
+- 海拔1号版本 / GoGoGo Version : 
 - 系统版本 / OS Version : 
 
-<!-- 请在上方描述有缺陷的4hao版本及使用的系统版本。 -->
+<!-- 请在上方描述有缺陷的海拔1号版本及使用的系统版本。 -->
 <!-- Please describe version of GoGoGo and used OS above. -->
 
 ### 复现步骤 / Steps to Reproduce

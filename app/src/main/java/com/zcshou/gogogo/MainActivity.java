@@ -197,12 +197,14 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
 
         initMapButton();
 
+        initHeightButton();
+
         initGoBtn();
 
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                mServiceBinder = (ServiceGo.ServiceGoBinder)service;
+                mServiceBinder = (ServiceGo.ServiceGoBinder) service;
             }
 
             @Override
@@ -286,13 +288,14 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         //找到searchView
         searchItem = menu.findItem(R.id.action_search);
-        searchItem.setOnActionExpandListener(new  MenuItem.OnActionExpandListener() {
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 mSearchLayout.setVisibility(View.INVISIBLE);
                 mHistoryLayout.setVisibility(View.INVISIBLE);
                 return true;  // Return true to collapse action view
             }
+
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 mSearchLayout.setVisibility(View.INVISIBLE);
@@ -304,13 +307,13 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                             MainActivity.this,
                             data,
                             R.layout.search_item,
-                            new String[] {DataBaseHistorySearch.DB_COLUMN_KEY,
+                            new String[]{DataBaseHistorySearch.DB_COLUMN_KEY,
                                     DataBaseHistorySearch.DB_COLUMN_DESCRIPTION,
                                     DataBaseHistorySearch.DB_COLUMN_TIMESTAMP,
                                     DataBaseHistorySearch.DB_COLUMN_IS_LOCATION,
                                     DataBaseHistorySearch.DB_COLUMN_LONGITUDE_CUSTOM,
                                     DataBaseHistorySearch.DB_COLUMN_LATITUDE_CUSTOM},
-                            new int[] {R.id.search_key,
+                            new int[]{R.id.search_key,
                                     R.id.search_description,
                                     R.id.search_timestamp,
                                     R.id.search_isLoc,
@@ -394,10 +397,9 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        if(sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             mAccValues = sensorEvent.values;
-        }
-        else if(sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+        } else if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             mMagValues = sensorEvent.values;
         }
 
@@ -554,7 +556,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                     return;
                 }
                 if (TextUtils.isEmpty(regUserName.getText())) {
-                    GoUtils.DisplayToast(this,  getResources().getString(R.string.app_error_username));
+                    GoUtils.DisplayToast(this, getResources().getString(R.string.app_error_username));
                     return;
                 }
                 if (TextUtils.isEmpty(regResp.getText())) {
@@ -629,6 +631,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                 //百度坐标系转wgs坐标系
                 // transformCoordinate(String.valueOf(point.longitude), String.valueOf(point.latitude));
             }
+
             /**
              * 单击地图中的POI点
              */
@@ -681,10 +684,10 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
             // 将 ClipData内容放到系统剪贴板里。
             cm.setPrimaryClip(mClipData);
 
-            GoUtils.DisplayToast(this,  getResources().getString(R.string.app_location_copy));
+            GoUtils.DisplayToast(this, getResources().getString(R.string.app_location_copy));
         });
         ImageButton ibShare = poiView.findViewById(R.id.poi_share);
-        ibShare.setOnClickListener(v -> ShareUtils.shareText(MainActivity.this, "分享位置", poiLongitude.getText()+","+poiLatitude.getText()));
+        ibShare.setOnClickListener(v -> ShareUtils.shareText(MainActivity.this, "分享位置", poiLongitude.getText() + "," + poiLatitude.getText()));
         ImageButton ibFly = poiView.findViewById(R.id.poi_fly);
         ibFly.setOnClickListener(this::doGoLocation);
         mGeoCoder = GeoCoder.newInstance();
@@ -762,6 +765,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                         }
                     }
                 }
+
                 /**
                  * 错误的状态码
                  * <a>http://lbsyun.baidu.com/index.php?title=android-locsdk/guide/addition-func/error-code</a>
@@ -838,7 +842,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
         inputPosBtn.setOnClickListener(v -> {
             AlertDialog dialog;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("请输入经度和纬度");
+            builder.setTitle("请输入经纬度和高度");
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.location_input, null);
             builder.setView(view);
             dialog = builder.show();
@@ -853,16 +857,16 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                 String dialog_lat_str = dialog_lat.getText().toString();
 
                 if (TextUtils.isEmpty(dialog_lng_str) || TextUtils.isEmpty(dialog_lat_str)) {
-                    GoUtils.DisplayToast(MainActivity.this,getResources().getString(R.string.app_error_input));
+                    GoUtils.DisplayToast(MainActivity.this, getResources().getString(R.string.app_error_input));
                 } else {
                     double dialog_lng_double = Double.parseDouble(dialog_lng_str);
                     double dialog_lat_double = Double.parseDouble(dialog_lat_str);
 
                     if (dialog_lng_double > 180.0 || dialog_lng_double < -180.0) {
-                        GoUtils.DisplayToast(MainActivity.this,  getResources().getString(R.string.app_error_longitude));
+                        GoUtils.DisplayToast(MainActivity.this, getResources().getString(R.string.app_error_longitude));
                     } else {
                         if (dialog_lat_double > 90.0 || dialog_lat_double < -90.0) {
-                            GoUtils.DisplayToast(MainActivity.this,  getResources().getString(R.string.app_error_latitude));
+                            GoUtils.DisplayToast(MainActivity.this, getResources().getString(R.string.app_error_latitude));
                         } else {
                             if (rbBD.isChecked()) {
                                 mMarkLatLngMap = new LatLng(dialog_lat_double, dialog_lng_double);
@@ -880,6 +884,64 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                         }
                     }
                 }
+            });
+
+            Button btnCancel = view.findViewById(R.id.input_position_cancel);
+            btnCancel.setOnClickListener(v1 -> dialog.dismiss());
+        });
+    }
+
+
+    private void initHeightButton() {
+        RadioGroup mGroupMapType = this.findViewById(R.id.RadioGroupMapType);
+        mGroupMapType.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.mapNormal) {
+                mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+            }
+
+            if (checkedId == R.id.mapSatellite) {
+                mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+            }
+        });
+
+        ImageButton curPosBtn = this.findViewById(R.id.cur_position);
+        curPosBtn.setOnClickListener(v -> resetMap());
+
+        ImageButton zoomInBtn = this.findViewById(R.id.zoom_in);
+        zoomInBtn.setOnClickListener(v -> mBaiduMap.animateMapStatus(MapStatusUpdateFactory.zoomIn()));
+
+        ImageButton zoomOutBtn = this.findViewById(R.id.zoom_out);
+        zoomOutBtn.setOnClickListener(v -> mBaiduMap.animateMapStatus(MapStatusUpdateFactory.zoomOut()));
+
+        ImageButton inputPosBtn = this.findViewById(R.id.input_height);
+        inputPosBtn.setOnClickListener(v -> {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("请输入高度");
+            View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.height_input, null);
+
+            builder.setView(view);
+            dialog = builder.show();
+
+            EditText dialog_height = view.findViewById(R.id.joystick_height);
+//            EditText dialog_lat = view.findViewById(R.id.joystick_latitude);
+//            RadioButton rbBD = view.findViewById(R.id.pos_type_bd);
+
+            Button btnGo = view.findViewById(R.id.input_height_set);
+            btnGo.setOnClickListener(v2 -> {
+                String height_str = dialog_height.getText().toString();
+
+
+                if (TextUtils.isEmpty(height_str)) {
+                    GoUtils.DisplayToast(MainActivity.this, getResources().getString(R.string.app_error_input));
+                } else {
+                    double dialog_height_double = Double.parseDouble(height_str);
+                    mServiceBinder.setHeight(dialog_height_double);
+                    dialog.dismiss();
+                    GoUtils.DisplayToast(MainActivity.this,"设置海拔为：" + height_str);
+                }
+
+
             });
 
             Button btnCancel = view.findViewById(R.id.input_position_cancel);
@@ -1111,7 +1173,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
 
         try {
             Cursor cursor = mSearchHistoryDB.query(DataBaseHistorySearch.TABLE_NAME, null,
-                    DataBaseHistorySearch.DB_COLUMN_ID + " > ?", new String[] {"0"},
+                    DataBaseHistorySearch.DB_COLUMN_ID + " > ?", new String[]{"0"},
                     null, null, DataBaseHistorySearch.DB_COLUMN_TIMESTAMP + " DESC", null);
 
             while (cursor.moveToNext()) {
@@ -1301,11 +1363,11 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("警告")//这里是表头的内容
                     .setMessage("确定要删除该项搜索记录吗?")//这里是中间显示的具体信息
-                    .setPositiveButton("确定",(dialog, which) -> {
+                    .setPositiveButton("确定", (dialog, which) -> {
                         String searchKey = ((TextView) view.findViewById(R.id.search_key)).getText().toString();
 
                         try {
-                            mSearchHistoryDB.delete(DataBaseHistorySearch.TABLE_NAME, DataBaseHistorySearch.DB_COLUMN_KEY + " = ?", new String[] {searchKey});
+                            mSearchHistoryDB.delete(DataBaseHistorySearch.TABLE_NAME, DataBaseHistorySearch.DB_COLUMN_KEY + " = ?", new String[]{searchKey});
                             //删除成功
                             //展示搜索历史
                             List<Map<String, Object>> data = getSearchHistory();
@@ -1315,19 +1377,19 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                                         MainActivity.this,
                                         data,
                                         R.layout.search_item,
-                                        new String[] {DataBaseHistorySearch.DB_COLUMN_KEY,
+                                        new String[]{DataBaseHistorySearch.DB_COLUMN_KEY,
                                                 DataBaseHistorySearch.DB_COLUMN_DESCRIPTION,
                                                 DataBaseHistorySearch.DB_COLUMN_TIMESTAMP,
                                                 DataBaseHistorySearch.DB_COLUMN_IS_LOCATION,
                                                 DataBaseHistorySearch.DB_COLUMN_LONGITUDE_CUSTOM,
                                                 DataBaseHistorySearch.DB_COLUMN_LATITUDE_CUSTOM}, // 与下面数组元素要一一对应
-                                        new int[] {R.id.search_key, R.id.search_description, R.id.search_timestamp, R.id.search_isLoc, R.id.search_longitude, R.id.search_latitude});
+                                        new int[]{R.id.search_key, R.id.search_description, R.id.search_timestamp, R.id.search_isLoc, R.id.search_longitude, R.id.search_latitude});
                                 mSearchHistoryList.setAdapter(simAdapt);
                                 mHistoryLayout.setVisibility(View.VISIBLE);
                             }
                         } catch (Exception e) {
                             XLog.e("ERROR: delete database error");
-                            GoUtils.DisplayToast(MainActivity.this,getResources().getString(R.string.history_delete_error));
+                            GoUtils.DisplayToast(MainActivity.this, getResources().getString(R.string.history_delete_error));
                         }
                     })
                     .setNegativeButton("取消",
@@ -1340,7 +1402,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
         mSuggestionSearch = SuggestionSearch.newInstance();
         mSuggestionSearch.setOnGetSuggestionResultListener(suggestionResult -> {
             if (suggestionResult == null || suggestionResult.getAllSuggestions() == null) {
-                GoUtils.DisplayToast(this,getResources().getString(R.string.app_search_null));
+                GoUtils.DisplayToast(this, getResources().getString(R.string.app_search_null));
             } else { //获取在线建议检索结果
                 List<Map<String, Object>> data = new ArrayList<>();
                 int retCnt = suggestionResult.getAllSuggestions().size();
@@ -1362,8 +1424,8 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
                         MainActivity.this,
                         data,
                         R.layout.search_poi_item,
-                        new String[] {POI_NAME, POI_ADDRESS, POI_LONGITUDE, POI_LATITUDE}, // 与下面数组元素要一一对应
-                        new int[] {R.id.poi_name, R.id.poi_address, R.id.poi_longitude, R.id.poi_latitude});
+                        new String[]{POI_NAME, POI_ADDRESS, POI_LONGITUDE, POI_LATITUDE}, // 与下面数组元素要一一对应
+                        new int[]{R.id.poi_name, R.id.poi_address, R.id.poi_longitude, R.id.poi_latitude});
                 mSearchList.setAdapter(simAdapt);
                 // mSearchList.setVisibility(View.VISIBLE);
                 mSearchLayout.setVisibility(View.VISIBLE);
@@ -1373,7 +1435,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
 
     /*============================== 更新 相关 ==============================*/
     private void initUpdateVersion() {
-        mDownloadManager =(DownloadManager) MainActivity.this.getSystemService(DOWNLOAD_SERVICE);
+        mDownloadManager = (DownloadManager) MainActivity.this.getSystemService(DOWNLOAD_SERVICE);
 
         // 用于监听下载完成后，转到安装界面
         mDownloadBdRcv = new BroadcastReceiver() {
@@ -1477,7 +1539,7 @@ public class MainActivity extends BaseActivity implements SensorEventListener {
         // DownloadManager不会覆盖已有的同名文件，需要自己来删除已存在的文件
         File file = new File(getExternalFilesDir("Updates"), mUpdateFilename);
         if (file.exists()) {
-            if(!file.delete()) {
+            if (!file.delete()) {
                 return;
             }
         }
