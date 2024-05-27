@@ -76,7 +76,7 @@ public class ServiceGo extends Service {
         removeTestProviderGPS();
         addTestProviderGPS();
 
-        initGoLocation();
+        initGoLocation(65);
 
         initNotification();
 
@@ -169,7 +169,7 @@ public class ServiceGo extends Service {
         mJoyStick.show();
     }
 
-    private void initGoLocation() {
+    public void initGoLocation(double altitude) {
         // 创建 HandlerThread 实例，第一个参数是线程的名字
         mLocHandlerThread = new HandlerThread(SERVICE_GO_HANDLER_NAME, Process.THREAD_PRIORITY_FOREGROUND);
         // 启动 HandlerThread 线程
@@ -183,8 +183,8 @@ public class ServiceGo extends Service {
                     Thread.sleep(100);
 
                     if (!isStop) {
-                        setLocationNetwork(65);
-                        setLocationGPS(65);
+                        setLocationNetwork(altitude);
+                        setLocationGPS(altitude);
 
                         sendEmptyMessage(HANDLER_MSG_ID);
                     }
@@ -329,41 +329,7 @@ public class ServiceGo extends Service {
         }
 
         public void setHeight(double altitude) {
-            try {
-                // 尽可能模拟真实的 GPS 数据
-                Location loc = new Location(LocationManager.GPS_PROVIDER);
-                Location networkLoc = new Location(LocationManager.NETWORK_PROVIDER);
-
-                // 设置GPS数据
-                loc.setAccuracy(Criteria.ACCURACY_FINE);    // 设定此位置的估计水平精度，以米为单位
-                loc.setAltitude(altitude);                 // 设置高度，在 WGS 84 参考坐标系中的米
-                loc.setTime(System.currentTimeMillis());   // 本地时间
-                loc.setSpeed((float) mSpeed);
-                loc.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
-                Bundle bundle = new Bundle();
-                bundle.putInt("satellites", 7);
-                loc.setExtras(bundle);
-
-                // 设置Network数据
-                networkLoc.setAccuracy(Criteria.ACCURACY_COARSE);  // 网络位置的精度较低
-                networkLoc.setAltitude(altitude);                 // 设置高度，在 WGS 84 参考坐标系中的米
-                networkLoc.setTime(System.currentTimeMillis());   // 本地时间
-                networkLoc.setSpeed((float) mSpeed);
-                networkLoc.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
-                Bundle networkBundle = new Bundle();
-                networkBundle.putInt("satellites", 7);
-                networkLoc.setExtras(networkBundle);
-
-                // 打印日志信息
-                XLog.d("ServiceGo", "setHeight: Setting GPS altitude to " + altitude);
-                XLog.d("ServiceGo", "setHeight: Setting Network altitude to " + altitude);
-
-                // 更新模拟位置
-                mLocManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, loc);
-                mLocManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, networkLoc);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+          ServiceGo.this.setLocationGPS(altitude);
         }
 
     }
