@@ -22,7 +22,7 @@
 
 ## 简介
 &emsp;&emsp;
-本仓库为影梭魔改版本，修改了包名，避免被dingding检测，增加了高度自定义功能，遵从GPL开源协议，本仓库永久免费开源，下面为原仓库
+本仓库为影梭魔改版本，修改了包名，遵从GPL开源协议，本仓库永久免费开源，下面为原仓库
 
 1. 源码仓库：[Github](https://github.com/ZCShou/GoGoGo)（推荐）、[Gitee](https://gitee.com/itexp/gogogo)（镜像）
 2. 下载地址：[Github](https://github.com/ZCShou/GoGoGo/releases)（推荐）、[Gitee](https://gitee.com/itexp/gogogo/releases)（镜像）
